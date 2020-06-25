@@ -1,0 +1,263 @@
+<odoo>
+    <data noupdate="1">
+        <record id="award_mey_awardee_supv_field" model="rewards.award">
+            <field name="name">Model Employee of the Year Awardee - Supervisory Level (Field)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">50000.00</field>
+            <field name="reward_leave_id" ref="hr_credits.holiday_status_vl"/>
+            <field name="reward_leave_count">7</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Plaque of Recognition, P50,000 cash incentive, 7 days leave for travel, MEY Portrait</field>
+            <field name="award_category_id" ref="rewards.award_category_mey"/>
+        </record>
+
+        <record id="award_mey_awardee_supv_office" model="rewards.award">
+            <field name="name">Model Employee of the Year Awardee - Supervisory Level (Office)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">50000.00</field>
+            <field name="reward_leave_id" ref="hr_credits.holiday_status_vl"/>
+            <field name="reward_leave_count">7</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Plaque of Recognition, P50,000 cash incentive, 7 days leave for travel, MEY Portrait</field>
+            <field name="award_category_id" ref="rewards.award_category_mey"/>
+        </record>
+
+        <record id="award_mey_awardee_nonsupv_field" model="rewards.award">
+            <field name="name">Model Employee of the Year Awardee - Non-Supervisory Level (Field)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">50000.00</field>
+            <field name="reward_leave_id" ref="hr_credits.holiday_status_vl"/>
+            <field name="reward_leave_count">7</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Plaque of Recognition, P50,000 cash incentive, 7 days leave for travel, MEY Portrait</field>
+            <field name="award_category_id" ref="rewards.award_category_mey"/>
+        </record>
+
+        <record id="award_mey_awardee_nonsupv_office" model="rewards.award">
+            <field name="name">Model Employee of the Year Awardee - Non-Supervisory Level (Office)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">50000.00</field>
+            <field name="reward_leave_id" ref="hr_credits.holiday_status_vl"/>
+            <field name="reward_leave_count">7</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Plaque of Recognition, P50,000 cash incentive, 7 days leave for travel, MEY Portrait</field>
+            <field name="award_category_id" ref="rewards.award_category_mey"/>
+        </record>
+
+        <record id="award_mey_fields" model="rewards.award">
+            <field name="name">Model Employees in their Respective Fields</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">5000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="award_category_id" ref="rewards.award_category_mey"/>
+        </record>
+
+        <record id="award_loyalty_10" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (10 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">10</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_15" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (15 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">15</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_20" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (20 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">20</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_25" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (25 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">25</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_30" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (30 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">30</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_35" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (35 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">35</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_40" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (40 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">40</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_loyalty_45" model="rewards.award">
+            <field name="name">Loyalty in Service Awardee (45 Years)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">10000.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="loyalty_year">45</field>
+            <field name="form_of_award">Plaque of Recognition, Memorabilia, P10,000 cash</field>
+            <field name="award_category_id" ref="rewards.award_category_loyalty"/>
+        </record>
+
+        <record id="award_pbb_best" model="rewards.award">
+            <field name="name">Best (PBB)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">salary_percentage</field>
+            <field name="reward_amount">65</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Cash Incentive</field>
+            <field name="award_category_id" ref="rewards.award_category_pbb"/>
+        </record>
+
+        <record id="award_pbb_better" model="rewards.award">
+            <field name="name">Better (PBB)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">salary_percentage</field>
+            <field name="reward_amount">57.5</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Cash Incentive</field>
+            <field name="award_category_id" ref="rewards.award_category_pbb"/>
+        </record>
+
+        <record id="award_pbb_good" model="rewards.award">
+            <field name="name">Good (PBB)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">salary_percentage</field>
+            <field name="reward_amount">50</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Cash Incentive</field>
+            <field name="award_category_id" ref="rewards.award_category_pbb"/>
+        </record>
+
+        <record id="award_praise_incentive_perm" model="rewards.award">
+            <field name="name">PRAISE Incentive (PERM)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">salary_percentage</field>
+            <field name="reward_amount">100</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_praise_incentive_joe" model="rewards.award">
+            <field name="name">PRAISE Incentive (JOE)</field>
+            <field name="award_type">monetary</field>
+            <field name="reward_amount_type">fixed_amount</field>
+            <field name="reward_amount">1.00</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_service" model="rewards.award">
+            <field name="name">Service Awardee Salamat-Paalam. Mabuhay Ka</field>
+            <field name="award_type">nonmonetary</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_gantimpala" model="rewards.award">
+            <field name="name">Gantimpala Agad Awardee</field>
+            <field name="award_type">nonmonetary</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_career" model="rewards.award">
+            <field name="name">Career and Self-Development Incentive Awardee</field>
+            <field name="award_type">nonmonetary</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+            <field name="form_of_award">Certificate of Recognition</field>
+        </record>
+
+        <record id="award_the_praise" model="rewards.award">
+            <field name="name">the PRAISE</field>
+            <field name="award_type">other</field>
+            <field name="state">approved</field>
+            <field name="is_active">True</field>
+            <field name="is_default">True</field>
+        </record>
+    </data>
+</odoo>

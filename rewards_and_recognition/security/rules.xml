@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_user_awardee_form" model="ir.rule">
+        <field name="name">Rewards Awardee User</field>
+        <field name="model_id" ref="model_rewards_awardee"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="domain_force">[
+            ('employee_id', '=', user.employee_id.id)
+        ]</field>
+        <field name="groups"
+            eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_officer_awardee_form" model="ir.rule">
+        <field name="name">Rewards Awardee Officer</field>
+        <field name="model_id" ref="model_rewards_awardee"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups"
+            eval="[(4, ref('rewards.group_rewards_officer'))]"/>
+    </record>
+
+    <!-- Inhert record rule of target to access all target forms -->
+    <record id="target.rule_target_form_officer" model="ir.rule">
+        <field
+            name="groups"
+            eval="[
+                (4, ref('target.group_officer')),
+                (4, ref('rewards.group_rewards_officer'))
+            ]"/>
+    </record>
+</odoo>

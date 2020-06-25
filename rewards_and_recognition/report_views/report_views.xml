@@ -1,0 +1,101 @@
+<odoo>
+    <!-- MEY SCORESHEET -->
+    <report
+        id="report_mey_scoresheet"
+        string="MEY Nominee Scoresheet"
+        model="report.rewards.mey_scoresheet_report_template"
+        report_type="qweb-pdf"
+        name="rewards.mey_scoresheet_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- Career and Development -->
+    <report
+        id="report_career"
+        string="Career and Development"
+        model="report.rewards.career_report_template"
+        report_type="qweb-pdf"
+        name="rewards.career_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- PBB Evaluation Matrix Summary -->
+    <report
+        id="report_pbb_eval_summary"
+        string="PBB Evaluation Matrix Summary"
+        model="report.rewards.pbb_eval_summary_report_template"
+        report_type="qweb-pdf"
+        name="rewards.pbb_eval_summary_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- PBB Ranking of Delivery Units -->
+    <report
+        id="report_pbb_delivery_units"
+        string="PBB Ranking on Delivery Units"
+        model="report.rewards.pbb_delivery_units_report_template"
+        report_type="qweb-pdf"
+        name="rewards.pbb_delivery_units_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- PBB List of Active Employees Qualified to Receive PBB (All Departments) -->
+    <report
+        id="report_pbb_all_departments"
+        string="List of Active Employees Qualified to Receive PBB (All Departments)"
+        model="report.rewards.pbb_all_departments_report_template"
+        report_type="qweb-pdf"
+        name="rewards.pbb_all_departments_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- PBB Summary of Performance Rating of Permanent and Casual Employees (Per Department) -->
+    <report
+        id="report_pbb_per_department"
+        string="Summary of Performance Rating of Permanent and Casual Employees (Per Department)"
+        model="report.rewards.pbb_per_department_report_template"
+        report_type="qweb-pdf"
+        name="rewards.pbb_per_department_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- Loyalty Awardees -->
+    <report
+        id="report_loyalty_awardees"
+        string="Loyalty Awardees"
+        model="report.rewards.loyalty_awardees_report_template"
+        report_type="qweb-pdf"
+        name="rewards.loyalty_awardees_report_template"
+        paperformat="utilities.standard_portrait_report_format"
+        menu="False"/>
+
+    <!-- List of Qualified MEY Nominees -->
+    <report
+        id="report_qualified_mey_nominees"
+        string="List of Qualified MEY Nominees"
+        model="report.rewards.qualified_mey_nominees_report_template"
+        report_type="qweb-pdf"
+        name="rewards.qualified_mey_nominees_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+
+    <!-- For Posting MEY Nominees -->
+    <report
+        id="report_for_posting_mey_nominees"
+        string="For Posting MEY Nominees"
+        model="report.rewards.for_posting_mey_nominees_report_template"
+        report_type="qweb-pdf"
+        name="rewards.for_posting_mey_nominees_report_template"
+        paperformat="utilities.standard_portrait_report_format"
+        menu="False"/>
+
+    <!-- Interview Schedule of MEY Nominees -->
+    <report
+        id="report_mey_interview_schedule"
+        string="Interview Schedule of MEY Nominees"
+        model="report.rewards.mey_interview_schedule_report_template"
+        report_type="qweb-pdf"
+        name="rewards.mey_interview_schedule_report_template"
+        paperformat="utilities.standard_landscape_report_format"
+        menu="False"/>
+</odoo>

@@ -1,0 +1,147 @@
+<odoo>
+    <template id="pbb_per_department_report_template">
+        <t t-foreach="department_list" t-as="department">
+            <div class="header report-header">
+                <style>
+                    .custom-header p {
+                        font-weight: bold;
+                        margin: 0;
+                        padding: 0;
+                    }
+                </style>
+                <div class="custom-header">
+                    <p><t t-esc="res_company.name.upper()"/></p>
+                    <p>STRATEGIC PERFORMANCE MANAGEMENT SYSTEM (SPMS)</p>
+                    <p>Performance Based Bonus for FY <t t-esc="awardee_batch_id.year"/></p>
+                    <p>Summary of Performance Rating of  Permanent and Casual Employees For FY <t t-esc="awardee_batch_id.year"/></p>
+                </div>
+            </div>
+            <div class="article report-article">
+                <style>
+                    p, th, td {
+                        font-size: 13px;
+                    }
+
+                    table.main th, table.main td {
+                        padding: 5px;
+                    }
+
+                    th {
+                        text-align: center;
+                    }
+
+                    tr {
+                        page-break-inside: avoid;
+                    }
+
+                    table.main, table.main th, table.main td {
+                        border: 1px black dotted;
+                        border-collapse: collapse;
+                    }
+
+                    table.main th {
+                        padding-top: 30px;
+                        padding-bottom: 5px;
+                        vertical-align: bottom;
+                    }
+
+                    table.main tr:not(:last-child) td:not(:nth-child(3)):not(:nth-child(11)):not(:nth-child(12)) {
+                        text-align: center;
+                    }
+
+                    table.main td:nth-child(3) {
+                        padding-left: 10px;
+                    }
+
+                    table.main td:nth-child(11),
+                    table.main td:nth-child(12) {
+                        text-align: right;
+                        padding-right: 10px;
+                    }
+
+                    table.main tr:last-child td {
+                        border-right-style: hidden;
+                        border-left-style: hidden;
+                        border-bottom-style: hidden;
+                        font-weight: bold;
+                    }
+
+                    .margin-left-60 {
+                        margin-left: 60px;
+                    }
+
+                    .margin-left-130 {
+                        margin-left: 130px;
+                    }
+                </style>
+
+                <p class="margin-left-130"><b><t t-esc="department['department_id'].name.upper()"/></b></p>
+
+                <table class="main">
+                    <tr>
+                        <th width="3%" rowspan="2"></th>
+                        <th width="4%" rowspan="2">EMPLOYEE ID NO.</th>
+                        <th width="12%" rowspan="2">EMPLOYEE</th>
+                        <th colspan="2">FINAL NUMERICAL RATING</th>
+                        <th width="10%" rowspan="2">AVERAGE RATING FOR FY <t t-esc="awardee_batch_id.year"/></th>
+                        <th width="7%" rowspan="2">ADJECTIVAL RATING</th>
+                        <th width="5%" rowspan="2">RANKING OF PERFORMANCE</th>
+                        <th width="7%" rowspan="2">SG</th>
+                        <th width="7%" rowspan="2">STEP</th>
+                        <th rowspan="2">SALARY</th>
+                        <th rowspan="2">PBB AMOUNT</th>
+                    </tr>
+
+                    <tr>
+                        <th>JAN.-JUNE</th>
+                        <th>JULY-DEC.</th>
+                    </tr>
+
+                    <t t-foreach="department['awardee_list']" t-as="awardee">
+                        <tr>
+                            <td><t t-esc="awardee['index']"/></td>
+                            <td><t t-esc="awardee['awardee_id'].employee_id.employee_id"/></td>
+                            <td><t t-esc="awardee['awardee_id'].employee_id.name.upper()"/></td>
+                            <td><t t-esc="awardee['awardee_id'].first_period_rating"/></td>
+                            <td><t t-esc="awardee['awardee_id'].second_period_rating"/></td>
+                            <td><t t-esc="awardee['awardee_id'].average_rating"/></td>
+                            <td><t t-esc="awardee['awardee_id'].spms_rating_value"/></td>
+                            <td><t t-esc="awardee['awardee_id'].award_id.name.upper()"/></td>
+                            <td><t t-esc="awardee['awardee_id'].salary_grade_id.name"/></td>
+                            <td><t t-esc="awardee['awardee_id'].salary_step_id.step"/></td>
+                            <td><t t-esc="'{:,.2f}'.format(awardee['awardee_id'].salary_amount)"/></td>
+                            <td><t t-esc="'{:,.2f}'.format(awardee['awardee_id'].amount)"/></td>
+                        </tr>
+                    </t>
+
+                    <tr>
+                        <td colspan="5">DEPARTMENT AVERAGE RATING FOR FY <t t-esc="awardee_batch_id.year"/></td>
+                        <td align="center"><t t-esc="department['average_rating']"/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td align="right"><t t-esc="'{:,.2f}'.format(department['total'])"/></td>
+                    </tr>
+                </table>
+
+                <br />
+                <br />
+                <br />
+
+                <p class="margin-left-60">I certify that the above SPMS final rating for FY <t t-esc="awardee_batch_id.year"/> of the employees under my department are correct.</p>
+
+                <br />
+                <br />
+                <br />
+                <br />
+
+                <div class="margin-left-60">
+                    <p><b><t t-esc="department['manager_id'].get_fullname(last_name_first=False, appellation=True).upper()"/></b></p>
+                    <p>Department Manager</p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,185 @@
+<odoo>
+    <!-- INTERVIEW ASSESSMENT VIEWS -->
+    <record id="view_mey_interview_assessment_search" model="ir.ui.view">
+        <field name="name">MEY Interview Assessment Search View</field>
+        <field name="model">rewards.mey_interview_assessment</field>
+        <field name="arch" type="xml">
+            <search string="MEY Interview Assessment Search">
+                <field name="awardee_id"/>
+                <group expand="0" string="Group By">
+                    <filter
+                        name="groupby_rank"
+                        string="Rank"
+                        context="{'group_by': 'rank_id'}"/>
+                    <filter
+                        name="groupby_employee"
+                        string="Employee"
+                        context="{'group_by': 'awardee_id'}"/>
+                    <filter
+                        name="filterby_current_year"
+                        string="Current Year"
+                        domain="[('year', '=', context_today().strftime('%Y'))]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_mey_interview_assessment_form" model="ir.ui.view">
+        <field name="name">MEY Interview Assessment Form View</field>
+        <field name="model">rewards.mey_interview_assessment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Set to Draft"
+                        type="object"
+                        name="action_draft"
+                        class="btn-default"
+                        states="declined"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="For Assessment"
+                        type="object"
+                        name="action_in_progress"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Set to Done"
+                        type="object"
+                        name="action_done"
+                        class="btn-default"
+                        states="in_progress"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Declined"
+                        type="object"
+                        name="action_declined"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group col="2" string="Assessment Information">
+                        <group>
+                            <field
+                                name="assessment_type"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                            <field
+                                name="awardee_id"
+                                options="{'no_create_edit':True}"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                            <field name="rank_id" readonly="1"/>
+                            <field name="year" readonly="1"/>
+                            <field
+                                name="evaluatee_id"
+                                options="{'no_create_edit':True}"
+                                attrs="{
+                                    'invisible': [('assessment_type', 'in', ['client', 'nominee'])],
+                                    'required': [('assessment_type', 'not in', ['client', 'nominee'])],
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                            <field
+                                name="client_evaluatee"
+                                attrs="{
+                                    'invisible': [('assessment_type', '!=', 'client')],
+                                    'required': [('assessment_type', '=', 'client')],
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                            <field name="committee_batch_id"/>
+                        </group>
+                        <group>
+                            <field
+                                name="schedule_from"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                            <field
+                                name="schedule_to"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }"/>
+                        </group>
+                    </group>
+                    <group string="Assessment Score">
+                        <field name="score"/>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                    <notebook>
+                        <page string="Assessment Results">
+                            <field
+                                name="assessment_result_ids"
+                                nolabel="1"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])]
+                                }">
+                                <tree create="false" delete="false">
+                                    <field name="criteria_id"/>
+                                    <field name="criteria_percentage"/>
+                                    <field name="score"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="criteria_id" readonly="1"/>
+                                            <field name="criteria_percentage"/>
+                                            <field name="score"/>
+                                            <field name="state" invisible="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mey_interview_assessment_tree" model="ir.ui.view">
+        <field name="name">Interview Assessment Tree View</field>
+        <field name="model">rewards.mey_interview_assessment</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="schedule_to desc"
+                decoration-info="state=='draft'"
+                decoration-primary="state=='in_progress'"
+                decoration-success="state=='done'"
+                decoration-danger="state=='declined'">
+                <field name="awardee_id"/>
+                <field name="rank_id"/>
+                <field name="assessment_type"/>
+                <field name="schedule_from"/>
+                <field name="schedule_to"/>
+                <field name="score"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_window_mey_interview_assessment" model="ir.actions.act_window">
+        <field name="name">MEY Interview Assessment</field>
+        <field name="res_model">rewards.mey_interview_assessment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create Interview Assessment Record
+            </p>
+        </field>
+        <field name="context">{
+            'search_default_groupby_employee': 1,
+            'search_default_filterby_current_year': 1
+        }</field>
+    </record>
+</odoo>

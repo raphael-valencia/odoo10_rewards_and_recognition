@@ -1,0 +1,106 @@
+<odoo>
+    <template id="loyalty_awardees_report_template">
+        <div class="header report-header">
+            <div style="margin-left: 100px; position: absolute;">
+                <img width="125px" t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"/>
+            </div>
+            <div style="text-align: center;">
+                <p class="bold">Republic of the Philippines</p>
+                <p t-esc="res_company.name.upper()"/>
+                <p class="subtext">
+                    <span t-field="res_company.street"/>,
+                    <t t-if="res_company.street2">
+                        <span t-field="res_company.street2"/>,
+                    </t>
+                    <span t-field="res_company.city"/>
+                </p>
+                <p>Telephone No.: <t t-esc="res_company.phone"/></p>
+                <p>Fax: <t t-esc="res_company.fax"/></p>
+                <p t-esc="res_company.website"/>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                p {
+                    font-size: 18px;
+                }
+
+                table {
+                    width: 100%;
+                }
+
+                table td {
+                    font-size: 15px;
+                    font-weight: bolder;
+                    padding-bottom: 10px;
+                }
+
+                table th {
+                    text-align: center;
+                }
+
+                table td:first-child {
+                    text-align: left;
+                }
+
+                table td:last-child {
+                    text-align: center;
+                }
+
+                .bold {
+                    font-weight: bold;
+                }
+
+                .title {
+                    padding-bottom: 35px;
+                    padding-top: 50px;
+                    text-align: center;
+                    font-weight: normal;
+                }
+
+                .bottomborder {
+                    border-bottom: 2px solid black;
+                }
+
+                .inquiries {
+                    page-break-inside: avoid;
+                    padding-top: 40px;
+                    font-size: 13 px;
+                    text-align: center;
+                }
+            </style>
+            <img style="margin-top: 50px" src="rewards/static/src/images/announcement.png" width="100%"/>
+            <h2 class="text-center">OFFICIAL &amp; PARTIAL LIST</h2>
+            <t t-foreach="sorted_years" t-as="year">
+                <table>
+                    <thead>
+                        <tr style="page-break-inside: avoid">
+                            <th class="title" colspan="100%">
+                                <p>The following employees will be the recipients of this year's <b>LOYALTY IN-SERVICE AWARD</b></p>
+                                <p>for <b><span t-esc="year"/> years</b> of dedicated service with the <b>DAVAO CITY WATER DISTRICT.</b></p>
+                            </th>
+                        </tr>
+                        <tr style="page-break-inside: avoid">
+                            <th></th>
+                            <th class="bottomborder" width="70%">NAMES</th>
+                            <th class="bottomborder" width="25%">Loyalty Date</th>
+                        </tr>
+                        <tr>
+                            <th style="padding-bottom:20px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="result[year]" t-as="row">
+                            <tr style="page-break-inside: avoid">
+                                <td t-esc="row[0]" />
+                                <td t-esc="row[1]" />
+                                <td t-esc="row[2]" />
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+            <p class="inquiries"><b>For inquiries please contact the Human Resource Management Office at local 1311.</b></p>
+        </div>
+    </template>
+</odoo>

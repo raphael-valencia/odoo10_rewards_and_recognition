@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+        <record id="module_category_rewards" model="ir.module.category">
+            <field name="name">Rewards and Recognition System</field>
+            <field name="description">Manage the Rewards and Recognition System</field>
+        </record>
+    </data>
+</odoo>

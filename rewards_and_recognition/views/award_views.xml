@@ -1,0 +1,198 @@
+<odoo>
+    <!-- AWARD CATEGORY VIEWS -->
+    <record id="view_award_category_form" model="ir.ui.view">
+        <field name="name">Award Category Form View</field>
+        <field name="model">rewards.award_category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <field name="name"/>
+                    </group>
+                    <group
+                        string="MEY Criteria"
+                        attrs="{
+                            'invisible': [('is_mey_category', '=', False)]
+                        }">
+                        <field name="mey_permanent_employee_year"/>
+                        <field name="mey_late_undertime_count"/>
+                        <field name="mey_awol_count"/>
+                        <field name="mey_leave_count"/>
+                        <field name="mey_spms_rating"/>
+                        <field name="mey_other_criteria"/>
+                        <field name="is_mey_category" invisible="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_award_category_tree" model="ir.ui.view">
+        <field name="name">Award Category Tree View</field>
+        <field name="model">rewards.award_category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_window_award_category" model="ir.actions.act_window">
+        <field name="name">Award Category</field>
+        <field name="res_model">rewards.award_category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create your first Award Category</p>
+        </field>
+    </record>
+
+    <!-- AWARD VIEWS -->
+    <record id="view_award_search" model="ir.ui.view">
+        <field name="name">Award Search View</field>
+        <field name="model">rewards.award</field>
+        <field name="arch" type="xml">
+            <search string="Award Search">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_award_form" model="ir.ui.view">
+        <field name="name">Award Form View</field>
+        <field name="model">rewards.award</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Set to Draft"
+                        type="object"
+                        name="action_draft"
+                        class="btn-default"
+                        states="for_approval,approved,declined"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="For Approval"
+                        type="object"
+                        name="action_for_approval"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Approved"
+                        type="object"
+                        name="action_approved"
+                        class="btn-default"
+                        states="for_approval"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Declined"
+                        type="object"
+                        name="action_declined"
+                        class="btn-default"
+                        states="draft,for_approval"
+                        groups="rewards.group_rewards_officer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group col="2">
+                        <group string="Award Information">
+                            <field
+                                name="is_active"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['draft', 'for_approval', 'declined'])],
+                                }"/>
+                            <field
+                                name="name"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="award_type"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="award_category_id"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="loyalty_year"
+                                attrs="{
+                                    'invisible': [('is_loyalty', '=', False)],
+                                    'required': [('is_loyalty', '=', True)]
+                                }"/>
+                        </group>
+                        <group
+                            string="Reward"
+                            attrs="{
+                                'invisible': [('award_type', '!=', 'monetary')]
+                            }">
+                            <field
+                                name="reward_amount_type"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="reward_amount"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="reward_leave_id"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field
+                                name="reward_leave_count"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }"/>
+                            <field name="is_loyalty" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="form_of_award"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_award_tree" model="ir.ui.view">
+        <field name="name">Award Tree View</field>
+        <field name="model">rewards.award</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-success="state=='approved'"
+                decoration-danger="state=='declined'">
+                <field name="name"/>
+                <field name="award_category_id"/>
+                <field name="award_type"/>
+                <field name="state"/>
+                <field name="is_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_window_award" model="ir.actions.act_window">
+        <field name="name">Award</field>
+        <field name="res_model">rewards.award</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create your first Award</p>
+        </field>
+    </record>
+</odoo>

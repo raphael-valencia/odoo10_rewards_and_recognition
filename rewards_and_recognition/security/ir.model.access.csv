@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+user_access_award_category,Rewards User Access - Award Category,model_rewards_award_category,base.group_user,1,0,0,0
+user_access_award,Rewards User Access - Award,model_rewards_award,base.group_user,1,0,0,0
+user_access_mey_assessment_criteria,Rewards User Access - MEY Assessment Criteria,model_rewards_mey_assessment_criteria,base.group_user,1,0,0,0
+user_access_mey_interview_assessment,Rewards User Access - MEY Interview Assessment,model_rewards_mey_interview_assessment,base.group_user,1,0,0,0
+user_access_mey_assessment_result,Rewards User Access - MEY Assessment Result,model_rewards_mey_assessment_result,base.group_user,1,0,0,0
+user_access_mey_committee_batch,Rewards User Access - MEY Committee Batch,model_rewards_mey_committee_batch,base.group_user,1,0,0,0
+user_access_mey_committee,Rewards User Access - MEY Committee,model_rewards_mey_committee,base.group_user,1,0,0,0
+user_access_awardee_batch,Rewards User Access - Awardee Batch,model_rewards_awardee_batch,base.group_user,1,0,0,0
+user_access_awardee,Rewards User Access - Awardee,model_rewards_awardee,base.group_user,1,0,0,0
+
+rewards_officer_access_award_category,Rewards Officer Access - Award Category,model_rewards_award_category,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_award,Rewards Officer Access - Award,model_rewards_award,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_mey_assessment_criteria,Rewards Officer Access - MEY Assessment Criteria,model_rewards_mey_assessment_criteria,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_mey_interview_assessment,Rewards Officer Access - MEY Interview Assessment,model_rewards_mey_interview_assessment,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_mey_assessment_result,Rewards Officer Access - MEY Assessment Result,model_rewards_mey_assessment_result,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_mey_committee_batch,Rewards Officer Access - MEY Committee Batch,model_rewards_mey_committee_batch,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_mey_committee,Rewards Officer Access - MEY Committee,model_rewards_mey_committee,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_awardee_batch,Rewards Officer Access - Awardee Batch,model_rewards_awardee_batch,rewards.group_rewards_officer,1,1,1,1
+rewards_officer_access_awardee,Rewards Officer Access - Awardee,model_rewards_awardee,rewards.group_rewards_officer,1,1,1,1

@@ -1,0 +1,283 @@
+<odoo>
+    <template id="pbb_delivery_units_report_template">
+        <div class="header report-header">
+            <span style="float: right;">
+                Page <span class="page"/> of <span class="topage"/>
+            </span>
+            <center>
+                <h3>REPORT ON RANKING OF DELIVERY UNITS</h3>
+                <h4>Department/Agency: <u><t t-esc="res_company.name"/></u></h4>
+            </center>
+        </div>
+        <div class="article report-article">
+            <style>
+                td, th {
+                    font-size: 13px;
+                }
+
+                th {
+                    text-align: center;
+                }
+
+                h3, h4 {
+                    font-weight: bold;
+                }
+
+                tr {
+                    page-break-inside: avoid;
+                }
+
+                table.main {
+                    width: 100%;
+                    margin-top: 40px;
+                }
+
+                table.main tr:first-child th:not(:last-child),
+                table.main tr:not(first-child) th {
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                }
+
+                table.main tr:first-child th:last-child {
+                    padding-top: 5px;
+                    padding-bottom: 0px;
+                }
+
+                table.main, table.main th, table.main td {
+                    border: 1px black solid;
+                    border-collapse: collapse;
+                }
+
+                table.head-table {
+                    border: 2px black solid;
+                    border-collapse: collapse;
+                    width: 80%;
+                    margin-left: 5%;
+                }
+
+                table.head-table td, table.head-table th {
+                    border: 1px black solid;
+                    padding-top: 5px;
+                }
+                table.head-table tr td {
+                    text-align: center;
+                }
+
+                tr.ranking td {
+                    vertical-align: top;
+                    padding-top: 20px;
+                }
+
+                tr.data-footer td {
+                    font-style: italic;
+                    font-weight: bold;
+                }
+
+                table.signatories {
+                    width: 100%;
+                    margin-top: 100px;
+                    margin-right: auto;
+                    margin-left: auto;
+                    page-break-inside: avoid;
+                }
+
+                table.signatories tr td {
+                    text-align: center;
+                }
+
+                table.signatories td {
+                    width: 50%;
+                }
+
+                .padding-left-10 {
+                    padding-left: 10px;
+                }
+
+                .padding-right-10 {
+                    padding-right: 10px;
+                }
+            </style>
+
+            <center>
+                <table class="head-table">
+                    <tr>
+                        <th colspan="4">
+                            Details for Head of Agency
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Salary Grade</th>
+                        <th>Months in Service in <t t-esc="awardee_batch_id.year"/></th>
+                        <th>Amount of PBB</th>
+                    </tr>
+                    <tr>
+                        <td><t t-esc="gm_id.employee_id.get_fullname().upper()"/></td>
+                        <td><t t-esc="gm_id.salary_grade_id.name"/></td>
+                        <td><t t-esc="gm_id.months_in_service"/></td>
+                        <td><t t-esc="'{:,.2f}'.format(gm_id.amount)"/></td>
+                    </tr>
+                </table>
+            </center>
+
+            <table class="main">
+                <tr>
+                    <th rowspan="2" width="10%">Ranking</th>
+                    <th rowspan="2" width="15%">Names of Delivery Units</th>
+                    <th rowspan="2" width="5%">Rate of Accomplishment of Targets (in %)</th>
+                    <th colspan="6">List of Employees</th>
+                </tr>
+                <tr>
+                    <th style="border-right-style: hidden;"></th>
+                    <th style="padding-left: 0px;">Names of Employee</th>
+                    <th>Salary Grade</th>
+                    <th>Step Increment</th>
+                    <th>Months in service in <t t-esc="awardee_batch_id.year"/></th>
+                    <th>Amount of PBB</th>
+                </tr>
+                <!-- data start -->
+                <t t-foreach="rank_delivery_unit_list" t-as="rank">
+                    <tr class="ranking">
+                        <td align="center" t-attf-rowspan="{{ rank['row_span'] }}"><b><t t-esc="rank['award_id'].name"/></b></td>
+                    </tr>
+                    <t t-foreach="rank['office_list']" t-as="office">
+                        <tr class="ranking">
+                            <td align="center" t-attf-rowspan="{{ office['row_span'] }}"><b><t t-esc="office['office_id'].name"/></b></td>
+                            <td align="center" t-attf-rowspan="{{ office['row_span'] }}">100%</td>
+                        </tr>
+                            <t t-foreach="office['department_list']" t-as="department">
+                                <tr>
+                                    <td colspan="6" class="padding-left-10"><i><t t-esc="department['department_id'].name"/></i></td>
+                                </tr>
+                                <t t-foreach="department['awardee_list']" t-as="awardee">
+                                    <tr>
+                                        <td style="border-right-style: dotted;" align="center" class="padding-left-10 padding-right-10"><t t-esc="awardee['index']"/></td>
+                                        <td class="padding-left-10"><t t-esc="awardee['awardee_id'].employee_id.get_fullname().upper()"/></td>
+                                        <td align="center"><t t-esc="awardee['awardee_id'].salary_grade_id.name"/></td>
+                                        <td align="center"><t t-esc="awardee['awardee_id'].salary_step_id.step"/></td>
+                                        <td align="center"><t t-esc="awardee['awardee_id'].months_in_service"/></td>
+                                        <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(awardee['awardee_id'].amount)"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        <tr class="data-footer">
+                            <td class="padding-left-10 padding-right-10"><t t-esc="office['count']"/></td>
+                            <td colspan="4">&#160;</td>
+                            <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(office['amount'])"/></td>
+                        </tr>
+                    </t>
+                    <tr class="data-footer">
+                        <td colspan="3" align="center">TOTAL</td>
+                        <td class="padding-left-10 padding-right-10"><t t-esc="rank['subtotal_count']"/></td>
+                        <td colspan="4">&#160;</td>
+                        <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(rank['subtotal_amount'])"/></td>
+                    </tr>
+                </t>
+            </table>
+
+            <table class="main">
+                <t t-if="employee_no_pbb_ids">
+                    <tr>
+                        <td t-attf-rowspan="{{ len(employee_no_pbb_ids) + 1 }}" class="padding-left-10">Did not meet Targets (No PBB)</td>
+                    </tr>
+                    <t t-foreach="employee_no_pbb_ids" t-as="emp">
+                        <tr>
+                            <td class="padding-left-10"><t t-esc="emp.name"/></td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td rowspan="2" class="padding-left-10">Did not meet Targets (No PBB)</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-left-10">N/A</td>
+                    </tr>
+                </t>
+                <t t-if="employee_no_saln_ids">
+                    <tr>
+                        <td t-attf-rowspan="{{ len(employee_no_saln_ids) + 1 }}" class="padding-left-10">Did not submit SALN</td>
+                    </tr>
+                    <t t-foreach="employee_no_saln_ids" t-as="emp">
+                        <tr>
+                            <td class="padding-left-10"><t t-esc="emp.name"/></td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td rowspan="2" class="padding-left-10">Did not submit SALN</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-left-10">N/A</td>
+                    </tr>
+                </t>
+                <t t-if="employee_no_ca_ids">
+                    <tr>
+                        <td t-attf-rowspan="{{ len(employee_no_ca_ids) + 1 }}" class="padding-left-10">Did not liquidate Cash Advance within reglementary period</td>
+                    </tr>
+                    <t t-foreach="employee_no_ca_ids" t-as="emp">
+                        <tr>
+                            <td class="padding-left-10"><t t-esc="emp.name"/></td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td rowspan="2" class="padding-left-10">Did not liquidate Cash Advance within reglementary period</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-left-10">N/A</td>
+                    </tr>
+                </t>
+                <t t-if="employee_no_spms_ids">
+                    <tr>
+                        <td t-attf-rowspan="{{ len(employee_no_spms_ids) + 1 }}" class="padding-left-10">Did not submit SPMS Forms</td>
+                    </tr>
+                    <t t-foreach="employee_no_spms_ids" t-as="emp">
+                        <tr>
+                            <td class="padding-left-10"><t t-esc="emp.name"/></td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td rowspan="2" class="padding-left-10">Did not submit SPMS Forms</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-left-10">N/A</td>
+                    </tr>
+                </t>
+                <t t-if="employee_excluded_ids">
+                    <tr>
+                        <td t-attf-rowspan="{{ len(employee_excluded_ids) + 1 }}" class="padding-left-10">Excluded due to other reasons (i.e Responsible for not submitting APP,APCPI or others)</td>
+                    </tr>
+                    <t t-foreach="employee_excluded_ids" t-as="emp">
+                        <tr>
+                            <td class="padding-left-10"><t t-esc="emp.name"/></td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td rowspan="2" class="padding-left-10">Excluded due to other reasons (i.e Responsible for not submitting APP,APCPI or others)</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-left-10">N/A</td>
+                    </tr>
+                </t>
+            </table>
+
+            <table class="signatories">
+                <tr>
+                    <td><b><t t-esc="hr_dept_manager_id.get_fullname(last_name_first=False, appellation=True).upper()"/></b></td>
+                    <td><b><t t-esc="gm_id.employee_id.get_fullname(last_name_first=False, appellation=True).upper()"/></b></td>
+                </tr>
+                <tr>
+                    <td>Manager, Human Resource Department</td>
+                    <td>General Manager</td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</odoo>

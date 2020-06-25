@@ -1,0 +1,57 @@
+<odoo>
+    <data noupdate="1">
+        <record id="mey_assessment_criteria_dependability" model="rewards.mey_assessment_criteria">
+            <field name="name">Dependability</field>
+            <field name="percentage">10</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_initiative" model="rewards.mey_assessment_criteria">
+            <field name="name">Initiative</field>
+            <field name="percentage">10</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_job_knowledge" model="rewards.mey_assessment_criteria">
+            <field name="name">Job Knowledge</field>
+            <field name="percentage">10</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_work_quality" model="rewards.mey_assessment_criteria">
+            <field name="name">Quality of Work</field>
+            <field name="percentage">15</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_work_quantity" model="rewards.mey_assessment_criteria">
+            <field name="name">Quantity of Work</field>
+            <field name="percentage">15</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_team_work" model="rewards.mey_assessment_criteria">
+            <field name="name">Team Work</field>
+            <field name="percentage">15</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_attendance" model="rewards.mey_assessment_criteria">
+            <field name="name">Attendance</field>
+            <field name="percentage">5</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_personality" model="rewards.mey_assessment_criteria">
+            <field name="name">Personality</field>
+            <field name="percentage">15</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="mey_assessment_criteria_achievement" model="rewards.mey_assessment_criteria">
+            <field name="name">Achievement</field>
+            <field name="percentage">5</field>
+            <field name="is_active">True</field>
+        </record>
+    </data>
+</odoo>

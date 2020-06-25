@@ -1,0 +1,23 @@
+<odoo>
+    <data noupdate="1">
+        <record id="award_category_mey" model="rewards.award_category">
+            <field name="name">Model Employee of The Year Award</field>
+            <field name="is_mey_category">True</field>
+            <field name="mey_permanent_employee_year">1</field>
+            <field name="mey_late_undertime_count">10</field>
+            <field name="mey_leave_count">15</field>
+            <field name="mey_spms_rating">5</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_category_loyalty" model="rewards.award_category">
+            <field name="name">Loyalty in Service Award</field>
+            <field name="is_default">True</field>
+        </record>
+
+        <record id="award_category_pbb" model="rewards.award_category">
+            <field name="name">Performance - Based Bonus</field>
+            <field name="is_default">True</field>
+        </record>
+    </data>
+</odoo>

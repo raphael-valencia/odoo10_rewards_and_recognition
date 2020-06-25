@@ -1,0 +1,96 @@
+<odoo>
+    <!-- ROOT MENU -->
+    <menuitem
+        id="rewards.menu_root_rewards"
+        name="Rewards and Recognition"
+        web_icon="rewards,static/src/description/icon.png"
+        groups="rewards.group_rewards_officer"
+        sequence="10"/>
+
+    <!-- PARENT MENUS -->
+    <!-- PLEASE UPDATE SEQUENCE AS NEEDED -->
+    <menuitem
+        id="rewards.menu_awardees"
+        name="Awardees"
+        parent="rewards.menu_root_rewards"
+        sequence="10"/>
+
+    <menuitem
+        id="rewards.menu_mey_interview_assessment"
+        name="MEY Interview Assessments"
+        parent="rewards.menu_root_rewards"
+        action="act_window_mey_interview_assessment"
+        sequence="20"/>
+
+    <menuitem
+        id="rewards.menu_configuration"
+        name="Configuration"
+        parent="rewards.menu_root_rewards"
+        sequence="40"/>
+
+    <!-- CHILD MENUS -->
+    <!-- PLEASE UPDATE SEQUENCE AS NEEDED -->
+
+    <!-- Awardees Submenus -->
+    <menuitem
+        id="rewards.menu_awardee_batch"
+        name="Awardee Batch"
+        parent="rewards.menu_awardees"
+        action="act_window_awardee_batch"
+        sequence="10"/>
+    <menuitem
+        id="rewards.menu_awardee"
+        name="Awardees"
+        parent="rewards.menu_awardees"
+        action="act_window_awardee"
+        sequence="20"/>
+
+    <!-- Configuration Submenus -->
+    <menuitem
+        id="rewards.menu_award_sub"
+        name="Awards"
+        parent="rewards.menu_configuration"
+        sequence="10"/>
+
+    <menuitem
+        id="rewards.menu_award"
+        name="Awards"
+        parent="rewards.menu_award_sub"
+        action="act_window_award"
+        sequence="10"/>
+
+    <menuitem
+        id="rewards.menu_award_category"
+        name="Award Categories"
+        parent="rewards.menu_award_sub"
+        action="act_window_award_category"
+        sequence="20"/>
+
+    <menuitem
+        id="rewards.menu_mey_sub"
+        name="MEY Config"
+        parent="rewards.menu_configuration"
+        sequence="20"/>
+
+    <menuitem
+        id="rewards.menu_mey_assessment_criteria"
+        name="MEY Assessment Criteria"
+        parent="rewards.menu_mey_sub"
+        action="act_window_mey_assessment_criteria"
+        sequence="10"/>
+
+    <menuitem
+        id="rewards.menu_mey_committee"
+        name="MEY Committee"
+        parent="rewards.menu_mey_sub"
+        action="act_window_mey_committee_batch"
+        sequence="20"/>
+
+    <!-- Awardee Menu item in HR Employee Module -->
+    <menuitem
+        id="rewards.menu_emp_awardee"
+        action="act_window_awardee"
+        parent="hr_201.hr_menu_others_root"
+        name="Awardees"
+        sequence="10" />
+</odoo>

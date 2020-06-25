@@ -1,0 +1,137 @@
+<odoo>
+    <template id="pbb_eval_summary_report_template">
+        <div class="header report-header">
+            <div style="text-align: center;">
+                <p><b>EVALUATION MATRIX SUMMARY</b></p>
+                <p><b>Davao City Water District</b></p>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                table {
+                    width: 100%;
+                }
+
+                table {
+                    border: 2px black solid;
+                    border-collapse: collapse;
+                }
+
+                th {
+                    text-align: center;
+                }
+
+                th, td {
+                    border: 1px black solid;
+                    padding-top: 10px;
+                    font-size: 13px;
+                }
+
+                tr.summary td {
+                    font-weight: bold;
+                }
+
+                tr.footer td:first-child, tr.footer td:nth-child(2) {
+                    border-right-style: hidden;
+                }
+
+                tr.footer td {
+                    font-weight: bold;
+                    border: 2px black solid;
+                }
+
+                tr.header th {
+                    border: 2px black solid;
+                }
+
+                table.signatories {
+                    margin-top: 100px;
+                    width: 100%;
+                    margin-right: auto;
+                    margin-left: auto;
+                }
+
+                table.signatories td {
+                    border-style: hidden;
+                }
+
+                table.signatories tr:first-child td {
+                    font-weight: bold;
+                }
+
+                table.signatories tr td {
+                    text-align: center;
+                }
+
+                table.signatories td {
+                    width: 50%;
+                }
+
+                .padding-left-10 {
+                    padding-left: 10px;
+                }
+
+                .padding-right-10 {
+                    padding-right: 10px;
+                }
+            </style>
+
+            <table>
+                <tr class="header">
+                    <th>Ranking</th>
+                    <th>No. of Delivery Units</th>
+                    <th width="35%">Name of Delivery Units</th>
+                    <th>No. of Officials and Employees Entitled to PBB</th>
+                    <th>Total Requirement</th>
+                </tr>
+                <t t-foreach="eval_summary_list" t-as="rank">
+                    <tr>
+                        <td class="padding-left-10" t-attf-rowspan="{{ len(rank['office_list']) + 1 }}">
+                            <t t-esc="rank['award_id'].name.upper()"/>
+                        </td>
+                    </tr>
+                    <t t-foreach="rank['office_list']" t-as="office">
+                        <tr>
+                            <td align="center"><t t-esc="office['index']"/></td>
+                            <td class="padding-left-10"><t t-esc="office['office_id'].name"/></td>
+                            <td align="center"><t t-esc="office['count']"/></td>
+                            <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(office['amount'])"/></td>
+                        </tr>
+                    </t>
+                    <tr class="summary">
+                        <td colspan="3" align="center">Sub-total</td>
+                        <td align="center"><t t-esc="rank['subtotal_count']"/></td>
+                        <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(rank['subtotal_amount'])"/></td>
+                    </tr>
+                    <tr><td colspan="5">&#160;</td></tr>
+                </t>
+
+                <tr>
+                    <td colspan="2" class="padding-left-10">Agency Head</td>
+                    <td class="padding-left-10"><t t-esc="gm_id.employee_id.get_fullname(last_name_first=False)"/></td>
+                    <td align="center">General Manager/SG <t t-esc="gm_id.salary_grade_id.name"/></td>
+                    <td align="right" class="padding-right-10"><b><t t-esc="'{:,.2f}'.format(gm_id.amount)"/></b></td>
+                </tr>
+
+                <tr><td colspan="5">&#160;</td></tr>
+
+                <tr class="footer">
+                    <td colspan="3" align="center">Grand Total</td>
+                    <td align="center"><t t-esc="total_count"/></td>
+                    <td align="right" class="padding-right-10"><t t-esc="'{:,.2f}'.format(total_amount)"/></td>
+                </tr>
+            </table>
+
+            <table class="signatories">
+                <tr>
+                    <td><t t-esc="hr_dept_manager_id.get_fullname(last_name_first=False, appellation=True).upper()"/></td>
+                    <td><t t-esc="gm_id.employee_id.get_fullname(last_name_first=False, appellation=True).upper()"/></td>
+                </tr>
+                <tr>
+                    <td>Manager, Human Resource Department</td>
+                    <td>General Manager</td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</odoo>

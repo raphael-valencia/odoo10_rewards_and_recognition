@@ -1,0 +1,36 @@
+<odoo>
+    <record id="awardee_action_wizard_form" model="ir.ui.view">
+        <field name="name">Award Action Wizard</field>
+        <field name="model">rewards.awardee_action_wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="award_id"/>
+                    <field name="implementation_sched"/>
+                    <field name="date_conferred"/>
+                </group>
+                <footer>
+                    <button
+                        name="action_update_awardee"
+                        string="Update Awardee Information"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <act_window
+        id="act_window_awardee_action_wizard"
+        name="Update Awardee Information"
+        src_model="rewards.awardee"
+        res_model="rewards.awardee_action_wizard"
+        view_type="form"
+        view_mode="form"
+        target="new"
+        key2="client_action_multi"
+        />
+</odoo>

@@ -1,0 +1,195 @@
+<odoo>
+    <template id="mey_scoresheet_report_template">
+        <t t-foreach="interviews" t-as="sheet">
+            <t t-foreach="committee_members" t-as="member">
+                <div class="header report-header">
+                    <div style="height: 15 px; margin-left: 375px;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width: 96px;"/>
+                    </div>
+                    <div style="text-align: center; margin-top: -20px;">
+                        <p class="text-center" t-esc="res_company.name" />
+                        <p class="text-center bold">MODEL EMPLOYEE OF THE YEAR</p>
+                        <p class="text-center bold">For the Year <span t-esc="year"/></p>
+                        <p class="text-center bold underline">INTERVIEW FORM</p>
+                        <t t-if="sheet.assessment_type == 'nominee'">
+                            <p class="text-center italic bold">For the Nominee</p>
+                        </t>
+                        <t t-else="">
+                            <p class="text-center italic bold">
+                                For the Nominee's <span class="underline"
+                                                        t-esc="sheet.assessment_type.upper()"/>
+                            </p>
+                        </t>
+                    </div>
+                </div>
+                <div class="article report-article">
+                    <style>
+                        table {
+                            width: auto;
+                            empty-cells: show;
+                            font-size: 15px;
+                        }
+
+                        table, th, td {
+                            border: 1px solid transparent;
+                            border-collapse: collapse;
+                            padding-left: 5px;
+                            padding-right: 5px;
+                        }
+
+                        td {
+                            border-collapse: collapse;
+                        }
+
+                        th {
+                            vertical-align: middle;
+                            font-weight: normal;
+                        }
+
+                        .bottomborder {
+                            border-bottom: 1px solid #000000;
+                            border-collapse: collapse;
+                        }
+
+                        td.border {
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                        }
+
+                        th.border {
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                        }
+
+                        .align-center {
+                            text-align: center;
+                        }
+
+                        .leftborder {
+                            border-left: 1px solid #000000;
+                            border-collapse: collapse;
+                        }
+
+                        .bgcolor {
+                            background-color: #c1bfff;
+                        }
+
+                        .graybgcolor {
+                            background-color: #c1c1c1;
+                        }
+
+                        .text-top {
+                            vertical-align: top;
+                        }
+                        .min-width {
+                            min-width: 165px;
+                        }
+                    </style>
+                    <table style="page-break-after:always;">
+                        <tr>
+                            <td colspan="100%" class="bottomborder">&#160;</td>
+                        </tr>
+                        <tr style="page-break-inside: avoid;">
+                            <th colspan="6" rowspan="3" class="align-center bold border leftborder">NOMINEE</th>
+                            <th rowspan="3" class="align-center bold border">DEPT</th>
+                            <th colspan="2" rowspan="3" class="align-center bold border">POSITION</th>
+                            <t t-if="sheet.assessment_type != 'nominee'">
+                                <th colspan="2" rowspan="3" class="align-center bold border"
+                                    t-esc="sheet.assessment_type.upper()"/>
+                            </t>
+                            <th colspan="9" class="align-center bold border bgcolor">MODEL EMPLOYEE OF THE YEAR CRITERIA</th>
+                            <th rowspan="2" class="align-center bold border graybgcolor">TOTAL</th>
+                        </tr>
+                        <tr>
+                            <t t-foreach="sheet.assessment_result_ids.sorted()" t-as="result">
+                                <th class="align-center italic border bgcolor bold"
+                                    t-esc="result.criteria_id.name"/>
+                            </t>
+                        </tr>
+                        <tr>
+                            <t t-foreach="sheet.assessment_result_ids.sorted()" t-as="result">
+                                <th class="align-center border bold italic"
+                                    t-esc="str(result.criteria_percentage)+'%'"/>
+                            </t>
+                            <th class="align-center border bold italic"
+                                t-esc="'100%'"/>
+                        </tr>
+                        <tr>
+                            <td colspan="100%" class="bold bottomborder" t-if="is_rank_file">
+                                NON-SUPERVISORY LEVEL
+                            </td>
+                            <td colspan="100%" class="bold bottomborder" t-else="">
+                                SUPERVISORY LEVEL
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="align-center border leftborder text-top">1.</td>
+                            <td colspan="3" class="bold border text-top min-width"
+                                t-esc="employee_name" />
+                            <td colspan="2" class="border">
+                                <img width="75px" height="75px"
+                                    t-att-src="'data:image/png;base64,%s' % to_text(awardee_img)"/>
+                            </td>
+                            <td class="align-center bold border text-top">
+                                <p t-esc="dept_code" />
+                            </td>
+                            <td colspan="2" class="align-center border text-top min-width"
+                                t-esc="assigned_position" />
+                            <t t-if="sheet.assessment_type == 'nominee'">
+                            </t>
+                            <t t-elif="sheet.assessment_type == 'client'">
+                                <td colspan="2" class="align-center border text-top min-width">
+                                    <p t-esc="sheet.client_evaluatee" />
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td colspan="2" class="align-center border text-top min-width">
+                                    <p t-esc="sheet.evaluatee_id.name" />
+                                </td>
+                            </t>
+                            <t t-foreach="sheet.assessment_result_ids.sorted()" t-as="result">
+                                <t t-if="result.score > 0">
+                                    <td class="align-center bold border bgcolor"
+                                        t-esc="result.score" />
+                                </t>
+                                <t t-else="">
+                                    <td class="border">&#160;</td>
+                                </t>
+                            </t>
+                            <t t-if="sheet.state == 'done'">
+                                <td class="align-center bold border graybgcolor"
+                                    t-esc="sheet.score" />
+                            </t>
+                            <t t-else="">
+                                <td class="border">&#160;</td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 50px">&#160;</td>
+                            <td colspan="6" class="bold">Interviewed and Rated by :</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 40px">&#160;</td>
+                            <td colspan="6" class="bottomborder align-center bold"
+                                t-esc="member.employee_id.name" />
+                        </tr>
+                        <tr>
+                            <td>&#160;</td>
+                            <td colspan="6" class="bold">Name &amp; Signature of Committee Member</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 40px">&#160;</td>
+                            <td colspan="6" class="bottomborder align-center"
+                                t-options='{"widget": "date"}'
+                                t-esc="sheet.schedule_from" />
+                        </tr>
+                        <tr>
+                            <td>&#160;</td>
+                            <td colspan="6" class="align-center">Date(s) Interviewed</td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

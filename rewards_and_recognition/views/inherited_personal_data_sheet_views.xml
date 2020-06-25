@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="inherited_personal_data_sheet_form" model="ir.ui.view">
+            <field name="name">Inherited Personal Data Sheet Form View</field>
+            <field name="model">hr_201.personal_data_sheet</field>
+            <field name="inherit_id" ref="hr_201.pds_hr_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_information']" position="inside">
+                    <group string="Awards">
+                        <field name="awardee_ids" nolabel="1">
+                            <tree
+                                create="false"
+                                delete="false"
+                                decoration-info="state=='draft'"
+                                decoration-primary="state=='for_approval'"
+                                decoration-danger="state=='declined'">
+                                <field name="year"/>
+                                <field name="date"/>
+                                <field name="department_id"/>
+                                <field name="division_id"/>
+                                <field name="award_id"/>
+                                <field name="status"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

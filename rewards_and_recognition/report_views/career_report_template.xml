@@ -1,0 +1,163 @@
+<odoo>
+    <template id="career_report_template">
+        <div class="header report-header">
+            <style>
+                .custom-header {
+                    font-weight: bold;
+                    padding-bottom: 20px;
+                    text-transform: uppercase;
+                }
+            </style>
+            <span style="float: right;">
+                Page <span class="page"/> of <span class="topage"/>
+            </span>
+            <div>
+                <p>Employees who were given the <b>Certificate of Recognition</b></p>
+                <p>as part of the PRAISE Non-Monetary Incentive</p>
+                <p>for having successfully completed their post graduate studies / achieved Licensure/Bar/Board exams</p>
+            </div>
+            <div class="custom-header">
+                <t t-esc="date_from"/> - <t t-esc="date_to"/>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                body {
+                    padding-left: 15px;
+                    padding-top: 10px;
+                }
+
+                p, table {
+                    font-size: 13px;
+                }
+
+                table {
+                    width: 100%;
+                }
+
+                table.signatories {
+                    width: 60%
+                    margin-right: auto;
+                    margin-left: auto;
+                    padding-top: 70px;
+                    page-break-inside: avoid;
+                }
+
+                table.signatories tr td {
+                    text-align: center;
+                }
+
+                table.signatories td {
+                    width: 20%;
+                }
+
+                table tr td {
+                    padding-top: 10px;
+                }
+
+                table tr.bold {
+                    font-weight: bold;
+                }
+
+                table.main tr th {
+                    text-decoration: underline;
+                    padding-bottom: 20px;
+                }
+
+                table.main tr td {
+                    text-align: left;
+                }
+
+                .padding-bottom-25 {
+                    padding-bottom: 25px;
+                }
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                tr {
+                    page-break-inside: avoid;
+                }
+            </style>
+            <table class="main">
+                <tr>
+                    <th></th>
+                    <th>NAME</th>
+                    <th>POST GRADUATE COURSE</th>
+                    <th>UNIVERSITY</th>
+                    <th>Date Awarded</th>
+                    <th>Award</th>
+                    <th></th>
+                </tr>
+                <t t-foreach="awardee_ids" t-as="awardee_id">
+                    <tr>
+                        <td><t t-esc="awardee_id[0]"/>.</td>
+                        <td t-esc="awardee_id[1].employee_id.name"/>
+                        <td t-esc="awardee_id[1].course_id.name"/>
+                        <td t-esc="awardee_id[1].school_id.name"/>
+                        <td><span t-field="awardee_id[1].date" t-options="{'format': 'MMMM YYYY'}"/></td>
+                        <td t-raw="awardee_id[1].award_id.form_of_award"/>
+                        <td t-esc="awardee_id[1].award_id.award_type_value"/>
+                    </tr>
+                </t>
+            </table>
+
+            <br />
+            <br />
+            <br />
+
+            <table class="signatories">
+                <tr>
+                    <td class="padding-bottom-25">Prepared by:</td>
+                    <td class="padding-bottom-25">Checked by:</td>
+                    <td class="padding-bottom-25">Noted by:</td>
+                </tr>
+                <tr class="bold">
+                    <td t-esc="prepared_by_id.get_fullname(last_name_first=False, appellation=True)"/>
+                    <td t-esc="checked_by_id.get_fullname(last_name_first=False, appellation=True)"/>
+                    <td t-esc="noted_by_id.get_fullname(last_name_first=False, appellation=True)"/>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-esc="prepared_by_id.rank_id.rank_code"/>,
+                        <t t-if="prepared_by_id.unit_id">
+                            <t t-esc="prepared_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="prepared_by_id.division_id">
+                            <t t-esc="prepared_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="prepared_by_id.department_id">
+                            <t t-esc="prepared_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-esc="checked_by_id.rank_id.rank_code"/>,
+                        <t t-if="checked_by_id.unit_id">
+                            <t t-esc="checked_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="checked_by_id.division_id">
+                            <t t-esc="checked_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="checked_by_id.department_id">
+                            <t t-esc="checked_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-esc="noted_by_id.rank_id.rank_code"/>,
+                        <t t-if="noted_by_id.unit_id">
+                            <t t-esc="noted_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="noted_by_id.division_id">
+                            <t t-esc="noted_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="noted_by_id.department_id">
+                            <t t-esc="noted_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</odoo>

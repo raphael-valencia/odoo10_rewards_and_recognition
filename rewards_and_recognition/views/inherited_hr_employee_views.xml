@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="inherited_view_employee_form" model="ir.ui.view">
+            <field name="name">Inherited Employee Form View</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_201.extended_hr_view"/>
+            <field name="arch" type="xml">
+                <field name="date_resign" position="after">
+                    <field name="loyalty_date"/>
+                    <field name="loyalty_year"/>
+                </field>
+                <xpath expr="//page[@name='service_records']" position="after">
+                    <page name="awards" string="Awards">
+                        <form>
+                            <group>
+                                <field
+                                    name="awardee_ids"
+                                    nolabel="1"
+                                    context="{'default_employee_id': id}">
+                                    <tree
+                                        decoration-info="state=='draft'"
+                                        decoration-primary="state=='for_approval'"
+                                        decoration-danger="state=='declined'">
+                                        <field name="year"/>
+                                        <field name="date"/>
+                                        <field name="department_id"/>
+                                        <field name="division_id"/>
+                                        <field name="award_id"/>
+                                        <field name="status"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </form>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

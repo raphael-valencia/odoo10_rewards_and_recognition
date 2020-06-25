@@ -1,0 +1,530 @@
+<odoo>
+    <!-- AWARDEE VIEWS -->
+    <record id="view_awardee_search" model="ir.ui.view">
+        <field name="name">Awardee Search View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="arch" type="xml">
+            <search string="Awardee Search">
+                <field name="employee_id"/>
+                <group expand="0" string="Group By">
+                    <filter
+                        name="groupby_award"
+                        string="Award"
+                        context="{'group_by': 'award_id'}"/>
+                    <filter
+                        name="groupby_dept"
+                        string="Department"
+                        context="{'group_by': 'department_id'}"/>
+                    <filter
+                        name="groupby_rank"
+                        string="Rank"
+                        context="{'group_by': 'rank_id'}"/>
+                    <filter
+                        name="groupby_rank_nature"
+                        string="Rank > Nature of Work"
+                        context="{'group_by': ['rank_id', 'nature_of_work']}"/>
+                    <filter
+                        name="groupby_award_rank_nature"
+                        string="Award > Rank > Nature of Work"
+                        context="{'group_by': ['award_id', 'rank_id', 'nature_of_work']}"/>
+                    <filter
+                        name="groupby_delivery_dept"
+                        string="Delivery Unit > Department"
+                        context="{'group_by': ['office_id', 'department_id']}"/>
+                    <filter
+                        name="filterby_current_year"
+                        string="Current Year"
+                        domain="[('year', '=', context_today().strftime('%Y'))]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_awardee_form" model="ir.ui.view">
+        <field name="name">Awardee Form View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Set to Draft"
+                        type="object"
+                        name="action_draft"
+                        class="btn-default"
+                        states="for_approval,declined"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="For Approval"
+                        type="object"
+                        name="action_for_approval"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="For Assessment"
+                        type="object"
+                        name="action_for_assessment"
+                        class="btn-default"
+                        attrs="{
+                            'invisible': [
+                                '|',
+                                ('state', '!=', 'for_approval'),
+                                ('special_award', '!=', 'mey')
+                            ],
+                        }"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Approved"
+                        type="object"
+                        name="action_approved"
+                        class="btn-default"
+                        attrs="{
+                            'invisible': [
+                                '|',
+                                ('state', '!=', 'for_approval'),
+                                ('special_award', '=', 'mey')
+                            ],
+                        }"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Assessed"
+                        type="object"
+                        name="action_assessed"
+                        class="btn-default"
+                        attrs="{
+                            'invisible': [
+                                '|',
+                                ('state', '!=', 'for_assessment'),
+                                ('special_award', '!=', 'mey')
+                            ],
+                        }"
+                        groups="rewards.group_rewards_officer"
+                        confirm="Are you sure you want to proceed? All interview assessment records of this awardee will be set to done."/>
+                    <button
+                        string="Set to Done"
+                        type="object"
+                        name="action_done"
+                        class="btn-default"
+                        states="assessed,approved"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Declined"
+                        type="object"
+                        name="action_declined"
+                        class="btn-default"
+                        states="draft,for_approval"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Generate Interview Assessments"
+                        type="object"
+                        name="action_generate_interview_assessments"
+                        class="btn-primary"
+                        attrs="{
+                            'invisible': [
+                                '|',
+                                ('state', 'not in', ['draft', 'for_approval']),
+                                ('special_award', '!=', 'mey')
+                            ],
+                        }"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Print Scoresheets"
+                        type="object"
+                        name="action_print_scoresheets"
+                        class="btn-primary"
+                        attrs="{
+                            'invisible': [
+                                ('special_award', '!=', 'mey')
+                            ],
+                        }"
+                        groups="rewards.group_rewards_officer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" style="width: 600px;">
+                        <button
+                            type="object"
+                            name="action_open_interview_assessment_ids"
+                            class="oe_stat_button"
+                            icon="fa-user"
+                            style="width:200px !important;"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'mey')],
+                            }">
+                            <field string="Interview Assessments" name="interview_assessment_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field
+                        name="image"
+                        widget="image"
+                        class="oe_avatar"/>
+                    <group col="2">
+                        <group>
+                            <field
+                                name="awardee_batch_id"
+                                readonly="1"
+                                attrs="{
+                                    'invisible': [('awardee_batch_id', '=', False)],
+                                }"/>
+                            <field
+                                name="date"
+                                attrs="{
+                                    'readonly': [
+                                        '|',
+                                        ('awardee_batch_id', '!=', False),
+                                        ('state', 'in', ['for_assessment', 'approved', 'assessed', 'done', 'declined'])
+                                    ],
+                                }"/>
+                            <field name="year"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Awardee Information">
+                            <group col="2">
+                                <group string="Awardee Information">
+                                    <field
+                                        name="status"
+                                        attrs="{
+                                            'readonly': [('state', 'in', ['for_assessment', 'approved', 'assessed', 'done', 'declined'])],
+                                        }"/>
+                                    <field
+                                        name="employee_id"
+                                        attrs="{
+                                            'readonly': [('state', 'in', ['for_assessment', 'approved', 'assessed', 'done', 'declined'])],
+                                        }"/>
+                                    <field name="assigned_position_id"/>
+                                    <field name="department_id"/>
+                                    <field
+                                        name="division_id"
+                                        attrs="{
+                                            'invisible': [('division_id', '=', False)]
+                                        }"/>
+                                    <field name="department_manager_id"/>
+                                    <field
+                                        name="division_manager_id"
+                                        attrs="{
+                                            'invisible': [('division_id', '=', False)]
+                                        }"/>
+                                    <field name="sex"/>
+                                    <field name="emp_status"/>
+                                </group>
+                                <group col="1">
+                                    <group string="Award">
+                                        <field
+                                            name="award_id"
+                                            attrs="{
+                                                'readonly': [
+                                                    '|',
+                                                    ('state', '=', 'done', 'declined'),
+                                                    ('awardee_batch_type', '=', 'individual')
+                                                ],
+                                            }"/>
+                                        <field
+                                            name="form_of_award"
+                                            attrs="{
+                                                'invisible': [('form_of_award', '=', False)],
+                                            }"/>
+                                    </group>
+                                    <group
+                                        string="Reward"
+                                        attrs="{
+                                            'invisible': [
+                                                ('is_reward_leave', '=', False),
+                                                ('is_reward_amount', '=', False),
+                                            ]
+                                        }">
+                                        <field
+                                            name="reward_leave_id"
+                                            attrs="{
+                                                'invisible': [('is_reward_leave', '=', False)],
+                                            }"/>
+                                        <field
+                                            name="reward_leave_count"
+                                            attrs="{
+                                                'invisible': [('is_reward_leave', '=', False)],
+                                            }"/>
+                                        <field
+                                            name="reward_amount_type"
+                                            attrs="{
+                                                'invisible': [('is_reward_amount', '=', False)],
+                                            }"/>
+                                        <field
+                                            name="reward_amount"
+                                            attrs="{
+                                                'invisible': [('is_reward_amount', '=', False)],
+                                            }"/>
+                                        <field
+                                            name="amount"
+                                            attrs="{
+                                                'invisible': [('is_reward_amount', '=', False)],
+                                            }"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="remarks"/>
+                                <field name="special_award" invisible="1"/>
+                                <field name="awardee_batch_type" invisible="1"/>
+                                <field name="is_reward_leave" invisible="1"/>
+                                <field name="is_reward_amount" invisible="1"/>
+                            </group>
+                        </page>
+                        <page
+                            string="MEY Awardee Information"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'mey')]
+                            }">
+                            <group col="2">
+                                <group string="MEY Awardee Information">
+                                    <field
+                                        name="nature_of_work"
+                                        attrs="{
+                                            'required': [('special_award', '=', 'mey')],
+                                        }"/>
+                                    <field
+                                        name="rank_id"
+                                        attrs="{
+                                            'required': [('special_award', '=', 'mey')],
+                                        }"/>
+                                    <field
+                                        name="date_of_origin"
+                                        attrs="{
+                                            'required': [('special_award', '=', 'mey')],
+                                        }"/>
+                                    <field name="years_of_origin"/>
+                                    <field name="spms_rating"/>
+                                    <field name="leave_count"/>
+                                    <field name="awol_count"/>
+                                    <field name="late_count"/>
+                                    <field name="undertime_count"/>
+                                    <field
+                                        name="admin_case"
+                                        attrs="{
+                                            'readonly': [('state', 'in', ['approved', 'assessed', 'done', 'declined'])],
+                                            'required': [('special_award', '=', 'mey')]
+                                        }"/>
+                                </group>
+                                <group string="MEY Interview Assessment Information">
+                                    <field name="total_score"/>
+                                    <field
+                                        name="schedule_from"
+                                        attrs="{
+                                            'readonly': [('state', 'in', ['approved', 'assessed', 'done', 'declined'])]
+                                        }"/>
+                                    <field
+                                        name="schedule_to"
+                                        attrs="{
+                                            'readonly': [('state', 'in', ['approved', 'assessed', 'done', 'declined'])]
+                                        }"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Loyalty Awardee Information"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'loyalty')]
+                            }">
+                            <group string="Loyalty Awardee Information">
+                                <field
+                                    name="loyalty_date"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'loyalty')],
+                                    }"/>
+                                <field name="loyalty_year"/>
+                            </group>
+                        </page>
+                        <page
+                            string="PBB Awardee Information"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'pbb')]
+                            }">
+                            <group string="PBB Awardee Information">
+                                <field
+                                    name="office_id"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'pbb')],
+                                    }"/>
+                                <field
+                                    name="months_in_service"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'pbb')],
+                                    }"/>
+                                <field
+                                    name="salary_grade_id"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'pbb')],
+                                    }"/>
+                                <field
+                                    name="salary_step_id"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'pbb')],
+                                    }"/>
+                                <field
+                                    name="salary_amount"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'pbb')],
+                                    }"/>
+                                <field name="spms_rating"/>
+                                <field name="first_period_rating"/>
+                                <field name="second_period_rating"/>
+                                <field name="average_rating"/>
+                            </group>
+                        </page>
+                        <page
+                            string="Career and Self Development Awardee Information"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'career')]
+                            }">
+                            <group string="Career and Self Development Awardee Information">
+                                <field
+                                    name="school_id"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'career')],
+                                    }"/>
+                                <field
+                                    name="course_id"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'career')],
+                                    }"/>
+                            </group>
+                        </page>
+                        <page
+                            string="Service Awardee Information"
+                            attrs="{
+                                'invisible': [('special_award', '!=', 'service')]
+                            }">
+                            <group string="Service Awardee Information" >
+                                <field
+                                    name="date_retired"
+                                    attrs="{
+                                        'required': [('special_award', '=', 'service')],
+                                    }"/>
+                            </group>
+                        </page>
+                        <page string="Other Information">
+                            <group string="Other Information">
+                                <field name="implementation_sched"/>
+                                <field name="date_conferred"/>
+                            </group>
+                            <group
+                                string="MEY Other Information"
+                                attrs="{
+                                    'invisible': [('special_award', '!=', 'mey')]
+                                }">
+                                <field name="leave_availed_from"/>
+                                <field name="leave_availed_to"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_default_awardee_tree" model="ir.ui.view">
+        <field name="name">Awardee Tree View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-danger="state=='declined'">
+                <field name="year"/>
+                <field name="date"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="division_id"/>
+                <field name="award_id"/>
+                <field name="status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Awardee Batch Redirect Tree Views -->
+    <record id="view_awardee_tree" model="ir.ui.view">
+        <field name="name">Awardee Tree View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="award_id"
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-danger="state=='declined'">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="division_id"/>
+                <field name="award_id"/>
+                <field name="status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mey_awardee_tree" model="ir.ui.view">
+        <field name="name">MEY Awardee Tree View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="total_score desc"
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-danger="state=='declined'">
+                <field name="employee_id"/>
+                <field name="nature_of_work"/>
+                <field name="rank_id"/>
+                <field name="department_id"/>
+                <field name="division_id"/>
+                <field name="total_score"/>
+                <field name="award_id"/>
+                <field name="status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pbb_awardee_tree" model="ir.ui.view">
+        <field name="name">PBB Awardee Tree View</field>
+        <field name="model">rewards.awardee</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="average_rating desc"
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-danger="state=='declined'">
+                <field name="employee_id"/>
+                <field name="office_id"/>
+                <field name="department_id"/>
+                <field name="division_id"/>
+                <field name="spms_rating"/>
+                <field name="first_period_rating"/>
+                <field name="second_period_rating"/>
+                <field name="average_rating"/>
+                <field name="award_id"/>
+                <field name="status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Act Window -->
+    <record id="act_window_awardee" model="ir.actions.act_window">
+        <field name="name">Awardee</field>
+        <field name="res_model">rewards.awardee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create your first Awardee</p>
+        </field>
+        <field name="context">{
+            'search_default_groupby_award': 1,
+            'search_default_groupby_dept': 1,
+            'search_default_filterby_current_year': 1
+        }</field>
+    </record>
+</odoo>

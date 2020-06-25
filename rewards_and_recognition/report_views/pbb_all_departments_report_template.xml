@@ -1,0 +1,253 @@
+<odoo>
+    <template id="pbb_all_departments_report_template">
+        <div class="header report-header">
+            <style>
+                .custom-header p {
+                    font-weight: bold;
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+            <span style="float: right;">
+                Page <span class="page"/> of <span class="topage"/>
+            </span>
+            <div class="custom-header">
+                <p><t t-esc="res_company.name.upper()"/></p>
+                <p>STRATEGIC PERFORMANCE MANAGEMENT SYSTEM (SPMS)</p>
+                <p>Performance Based Bonus for FY <t t-esc="awardee_batch_id.year"/></p>
+                <p>List of Active Employees Qualified to Receive PBB FY <t t-esc="awardee_batch_id.year"/></p>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                p, th, td{
+                    font-size: 13px;
+                }
+
+                th {
+                    text-align: center;
+                }
+
+                table.grand-total {
+                    width: 35%;
+                    border-collapse: collapse;
+                    font-weight: bold;
+                    margin-left: 53.5%;
+                }
+
+                table.active-employees {
+                    width: 60%;
+                    border-collapse: collapse;
+                    font-weight: bold;
+                    margin-left: 28.5%;
+                }
+
+                table.main {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                table.main th {
+                    padding-top: 25px;
+                }
+
+                table.main td {
+                    padding-top: 10px;
+                }
+
+                table.main,
+                table.main th,
+                table.main tr:not(.subtotal):not(.grandtotal):not(.no-borders):not(.active-employees) td {
+                    border: 1px black dotted;
+                }
+
+                table.main tr:not(.subtotal):not(.grandtotal) td:not(:nth-child(3)):not(:nth-child(7)):not(:nth-child(9)) {
+                    text-align: center;
+                }
+
+                table.main tr td:nth-child(3) {
+                    padding-left: 10px;
+                }
+
+                table.main tr td:nth-child(7),
+                table.main tr td:nth-child(9) {
+                    text-align: right;
+                    padding-right: 10px;
+                }
+
+                table.main tr.subtotal td {
+                    border-right-style: hidden;
+                    border-left-style: hidden;
+                    border-bottom-style: hidden;
+                    font-weight: bold;
+                }
+
+                tr.no-borders td {
+                    border-style: hidden;
+                }
+
+                table.signatories {
+                    border-collapse: collapse;
+                    width: 85%;
+                    margin-right: auto;
+                    margin-left: auto;
+                    page-break-inside: avoid;
+                }
+                table.signatories tr td {
+                    text-align: center;
+                }
+
+                table.signatories td {
+                    width: 28%;
+                }
+
+                .margin-left-80 {
+                    margin-left: 80px;
+                }
+
+                .row {
+                    display: flex;
+                }
+
+                .col-3 {
+                    flex: 33.3%;
+                }
+
+                tr {
+                    page-break-inside: avoid;
+                }
+
+                .department {
+                    page-break-inside: avoid;
+                }
+
+                .padding-bottom-25 {
+                    padding-bottom: 25px;
+                }
+
+                .padding-right-10 {
+                    padding-right: 10px;
+                }
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+
+            <t t-foreach="department_list" t-as="department">
+                <div class="department">
+                    <p class="margin-left-80"><b><t t-esc="department['department_id'].name.upper()"/></b></p>
+                    <table class="main">
+                        <tr>
+                            <th width="6%"></th>
+                            <th width="8%">EMPLOYEE ID NO.</th>
+                            <th width="20%">EMPLOYEE</th>
+                            <th width="15%">RANKING OF PERFORMANCE</th>
+                            <th width="5%">SG</th>
+                            <th width="5%">STEP</th>
+                            <th width="7%">SALARY</th>
+                            <th width="7%"></th>
+                            <th width="12%">PBB AMOUNT</th>
+                            <th width="10%">REMARKS</th>
+                        </tr>
+                        <t t-foreach="department['awardee_list']" t-as="awardee">
+                            <tr>
+                                <td><t t-esc="awardee['index']"/></td>
+                                <td><t t-esc="awardee['awardee_id'].employee_id.employee_id"/></td>
+                                <td><t t-esc="awardee['awardee_id'].employee_id.name.upper()"/></td>
+                                <td><t t-esc="awardee['awardee_id'].award_id.name.upper()"/></td>
+                                <td><t t-esc="awardee['awardee_id'].salary_grade_id.name"/></td>
+                                <td><t t-esc="awardee['awardee_id'].salary_step_id.step"/></td>
+                                <td><t t-esc="'{:,.2f}'.format(awardee['awardee_id'].salary_amount)"/></td>
+                                <td></td>
+                                <td><t t-esc="'{:,.2f}'.format(awardee['awardee_id'].amount)"/></td>
+                                <td><t t-raw="awardee['awardee_id'].remarks"/></td>
+                            </tr>
+                        </t>
+                        <tr class="subtotal">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2">Subtotal</td>
+                            <td></td>
+                            <td class="padding-right-10" align="right"><t t-esc="'{:,.2f}'.format(department['subtotal'])"/></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                </div>
+            </t>
+            <!-- Grandtotal section of the table -->
+            <table class="grand-total">
+                <tr>
+                    <td align="left">GRAND TOTAL</td>
+                    <td align="right"><u><t t-esc="'{:,.2f}'.format(total_amount)"/></u></td>
+                </tr>
+            </table>
+            <br/>
+            <table class="active-employees">
+                <tr>
+                    <td align="left"><i>TOTAL NO. OF ACTIVE EMPLOYEES QUALIFIED TO RECEIVE PBB FY <t t-esc="awardee_batch_id.year"/></i></td>
+                    <td align="right"><t t-esc="total_count"/></td>
+                </tr>
+            </table>
+            <br />
+            <br />
+            <br />
+            <table class="signatories">
+                <tr>
+                    <td class="padding-bottom-25">Prepared by:</td>
+                    <td class="padding-bottom-25">Reviewed by:</td>
+                    <td class="padding-bottom-25">Noted by:</td>
+                </tr>
+                <tr>
+                    <td class="bold" t-esc="prepared_by_id.get_fullname(last_name_first=False, appellation=True).upper()"/>
+                    <td class="bold" t-esc="checked_by_id.get_fullname(last_name_first=False, appellation=True).upper()"/>
+                    <td class="bold" t-esc="noted_by_id.get_fullname(last_name_first=False, appellation=True).upper()"/>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-esc="prepared_by_id.rank_id.rank_code"/>,
+                        <t t-if="prepared_by_id.unit_id">
+                            <t t-esc="prepared_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="prepared_by_id.division_id">
+                            <t t-esc="prepared_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="prepared_by_id.department_id">
+                            <t t-esc="prepared_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-esc="checked_by_id.rank_id.rank_code"/>,
+                        <t t-if="checked_by_id.unit_id">
+                            <t t-esc="checked_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="checked_by_id.division_id">
+                            <t t-esc="checked_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="checked_by_id.department_id">
+                            <t t-esc="checked_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-esc="noted_by_id.rank_id.rank_code"/>,
+                        <t t-if="noted_by_id.unit_id">
+                            <t t-esc="noted_by_id.unit_id.name"/>
+                        </t>
+                        <t t-elif="noted_by_id.division_id">
+                            <t t-esc="noted_by_id.division_id.name"/>
+                        </t>
+                        <t t-elif="noted_by_id.department_id">
+                            <t t-esc="noted_by_id.department_id.name"/>
+                        </t>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</odoo>

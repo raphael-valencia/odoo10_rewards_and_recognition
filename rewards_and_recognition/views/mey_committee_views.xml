@@ -1,0 +1,116 @@
+<odoo>
+    <!--MEY Committee Batch Form View -->
+    <record model="ir.ui.view" id="view_mey_committee_batch_form">
+        <field name="name">MEY Committee Batch Form View</field>
+        <field name="model">rewards.mey_committee_batch</field>
+        <field name="arch" type="xml">
+            <form string="MEY Committee Batch">
+                <header>
+                    <button
+                        string="Set to Draft"
+                        type="object"
+                        name="action_draft"
+                        class="btn-default"
+                        states="for_approval,declined"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="For Approval"
+                        type="object"
+                        name="action_for_approval"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Approved"
+                        type="object"
+                        name="action_approved"
+                        class="btn-default"
+                        states="for_approval"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Declined"
+                        type="object"
+                        name="action_declined"
+                        class="btn-default"
+                        states="draft,for_approval"
+                        groups="rewards.group_rewards_officer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field
+                            name="date"
+                            attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                            }"/>
+                        <field name="year"/>
+                    </group>
+                    <notebook>
+                        <page string="Committees">
+                            <field
+                                name="mey_committee_ids"
+                                nolabel="1"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['approved', 'declined'])],
+                                }">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="rank_id"/>
+                                    <field name="assigned_position_id"/>
+                                    <field name="department_id"/>
+                                    <field name="division_id"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field
+                                                name="employee_id"
+                                                options="{
+                                                    'no_create_edit': True,
+                                                    'no_create': True
+                                                }"/>
+                                            <field name="rank_id"/>
+                                            <field name="assigned_position_id"/>
+                                            <field name="department_id"/>
+                                            <field name="division_id"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- MEY Committee Batch Tree View-->
+    <record model="ir.ui.view" id="view_mey_committee_batch_tree">
+        <field name="name">MEY Committee Batch Tree View</field>
+        <field name="model">rewards.mey_committee_batch</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-info="state=='draft'"
+                decoration-primary="state=='for_approval'"
+                decoration-success="state=='approved'"
+                decoration-danger="state=='declined'">
+                <field name="year"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_window_mey_committee_batch">
+        <field name="name">MEY Committee Batch</field>
+        <field name="res_model">rewards.mey_committee_batch</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create MEY Committee Batch</p>
+        </field>
+    </record>
+</odoo>

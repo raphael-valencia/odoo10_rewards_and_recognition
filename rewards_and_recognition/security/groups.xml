@@ -1,0 +1,9 @@
+<odoo>
+    <data noupdate="0">
+        <record id="group_rewards_officer" model="res.groups">
+            <field name="name">Rewards and Recognition Officer</field>
+            <field name="comment">Manage Rewards System with Officer Permissions</field>
+            <field name="category_id" ref="rewards.module_category_rewards"></field>
+        </record>
+    </data>
+</odoo>

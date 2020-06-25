@@ -1,0 +1,178 @@
+<odoo>
+    <!-- AWARDEE BATCH VIEWS -->
+    <record id="view_awardee_batch_search" model="ir.ui.view">
+        <field name="name">Awardee Batch Search View</field>
+        <field name="model">rewards.awardee_batch</field>
+        <field name="arch" type="xml">
+            <search string="Awardee Batch Search">
+                <field name="name"/>
+                <group expand="0" string="Group By">
+                    <filter
+                        name="filterby_current_year"
+                        string="Current Year"
+                        domain="[('year', '=', context_today().strftime('%Y'))]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_awardee_batch_form" model="ir.ui.view">
+        <field name="name">Awardee Batch Form View</field>
+        <field name="model">rewards.awardee_batch</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Set to Draft"
+                        type="object"
+                        name="action_draft"
+                        class="btn-default"
+                        states="declined"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Approved"
+                        type="object"
+                        name="action_in_progress"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Set to Done"
+                        type="object"
+                        name="action_done"
+                        class="btn-default"
+                        states="in_progress"
+                        groups="rewards.group_rewards_officer"
+                        confirm="Are you sure you want to set to done? All awardee records in this batch will be set to done also."/>
+                    <button
+                        string="Declined"
+                        type="object"
+                        name="action_declined"
+                        class="btn-default"
+                        states="draft"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Generate Awardees"
+                        type="object"
+                        name="action_generate_awardees"
+                        class="btn-primary"
+                        states="draft,in_progress"
+                        groups="rewards.group_rewards_officer"/>
+                    <button
+                        string="Print Report"
+                        type="action"
+                        name="%(act_window_awardee_batch_report)d"
+                        class="btn-primary"
+                        states="done"
+                        groups="rewards.group_rewards_officer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" style="width: 600px;">
+                        <button
+                            type="object"
+                            name="action_open_awardee_ids"
+                            class="oe_stat_button"
+                            icon="fa-user">
+                            <field string="Awardees" name="total_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group>
+                            <field
+                                name="date"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])],
+                                }"/>
+                            <field
+                                name="awardee_batch_type"
+                                attrs="{
+                                    'readonly': [('state', 'in', ['done', 'declined'])],
+                                }"/>
+                            <field
+                                name="award_category_id"
+                                attrs="{
+                                    'invisible': [('awardee_batch_type', '!=', 'category')],
+                                    'required': [('awardee_batch_type', '=', 'category')],
+                                    'readonly': [('state', 'in', ['done', 'declined'])],
+                                }"/>
+                            <field
+                                name="award_id"
+                                attrs="{
+                                    'invisible': [('awardee_batch_type', '!=', 'individual')],
+                                    'required': [('awardee_batch_type', '=', 'individual')],
+                                    'readonly': [('state', 'in', ['done', 'declined'])],
+                                }"/>
+                        </group>
+                        <group>
+                            <field name="total_male_count"/>
+                            <field name="total_female_count"/>
+                        </group>
+                    </group>
+                    <group
+                        col="2"
+                        attrs="{
+                            'invisible': [('is_mey_categ', '=', False)],
+                        }">
+                        <group string="MEY Criteria Information">
+                            <field name="mey_permanent_employee_year"/>
+                            <field name="mey_late_undertime_count"/>
+                            <field name="mey_awol_count"/>
+                            <field name="mey_leave_count"/>
+                            <field name="mey_admin_case"/>
+                            <field name="mey_spms_rating"/>
+                            <field name="mey_other_criteria"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field
+                            name="remarks"
+                            attrs="{
+                                'readonly': [('state', 'in', ['done', 'declined'])],
+                            }"/>
+                        <field name="is_mey_categ" invisible="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_awardee_batch_tree" model="ir.ui.view">
+        <field name="name">Awardee Batch Tree View</field>
+        <field name="model">rewards.awardee_batch</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-info="state=='draft'"
+                decoration-primary="state=='in_progress'"
+                decoration-success="state=='done'"
+                decoration-danger="state=='declined'">
+                <field name="name"/>
+                <field name="year"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_window_awardee_batch" model="ir.actions.act_window">
+        <field name="name">Awardee Batch</field>
+        <field name="res_model">rewards.awardee_batch</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create your first Awardee Batch</p>
+        </field>
+        <field name="context">{
+            'search_default_filterby_current_year': 1
+        }</field>
+    </record>
+</odoo>

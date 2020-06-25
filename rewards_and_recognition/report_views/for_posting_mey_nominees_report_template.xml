@@ -1,0 +1,87 @@
+<odoo>
+    <template id="for_posting_mey_nominees_report_template">   
+        <div class="header report-header">
+            <div class="bold" style="float: left;">
+                <p class="underline">List of Nominees for the MODEL EMPLOYEE OF THE YEAR <t t-esc="year"/></p>
+                <p> Evaluation Per Personnel Records</p>
+                <p class="italic">Years in Service as Permanent Employee, Attendance Records, Administrative Cases</p>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                table, td {
+                    border: 1px solid black;
+                    font-size: 11px;
+                    padding-left: 5px;
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 90%; 
+                }
+                .top-text td{
+                    vertical-align: top;
+                }
+                
+                .center-text {
+                    text-align: center;
+                }
+
+                .header-color td {
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    background-color: #c1bfff;
+                    font-weight: bold;            
+                }
+
+                .signatory {
+                    page-break-inside: avoid; 
+                    margin-top: 60px;
+                    font-size: 11 px;
+                }
+            </style>
+            <t t-foreach="result" t-as="level">
+                <p style="margin-top: 10px;" class="bold">
+                    <t t-foreach="levels" t-as="lvl">
+                        <t t-if="lvl[0] == level">
+                            <span t-esc="(level_index+1)*'I'"/>. <span t-esc="lvl[1]" />
+                        </t>
+                    </t>
+                </p>
+                <t t-foreach="result[level]" t-as="category">
+                    <p style="margin-top: 10px;" class="bold">
+                        <t t-foreach="categories" t-as="categ">
+                            <t t-if="categ[0] == category">
+                                <span t-esc="category_index+1"/>. <span t-esc="categ[1]" /> Category
+                            </t>
+                        </t>
+                    </p>
+                    <table t-attf-class="top-text center-text">
+                        <thead style="page-break-inside: avoid;">
+                            <tr class="header-color" style="page-break-inside: avoid;">
+                                <td rowspan="2" colspan="3">Name</td>
+                                <td rowspan="2">Position</td>
+                                <td rowspan="2">Dept</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="result[level][category]" t-as="row">
+                                <tr style="page-break-inside: avoid;" class="center-text top-text">
+                                    <td width="5%" t-esc="row_index+1"  />
+                                    <td width="25%" style="text-align:left;" t-esc="row.employee_id.name.upper()"/>
+                                    <td width="15%"><img t-att-src="'data:image/png;base64,%s' % to_text(row.image)" width="85px"/></td>
+                                    <td width="27%" t-esc="row.assigned_position_id.name" />
+                                    <td t-esc="row.department_id.name"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </t>
+            <div class="signatory">
+                <p class="bold" t-esc="committee_member.employee_id.name" />
+                <p t-esc="committee_member.employee_id.department_id.name" />
+                <p><i>Secretariat, Model Employee of the Year Committee</i></p>
+            </div>
+        </div>
+    </template>
+</odoo>

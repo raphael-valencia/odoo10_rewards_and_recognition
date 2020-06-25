@@ -1,0 +1,168 @@
+<odoo>
+    <template id="mey_interview_schedule_report_template">   
+        <div class="header report-header">
+            <div class="bold" style="float: left;">
+                <t t-if="is_proposed_sched">
+                    <p class="underline">PROPOSED SCHEDULE OF INTERVIEW ASSESSMENT: MODEL EMPLOYEE OF THE YEAR <t t-esc="year"/></p>
+                    <p style="font-size: 11px; background-color: #FFB6C1;">
+                        <t t-esc="prelim_date" />
+                    </p>
+                    <ul style="list-style-type: none; font-size: 11px;">
+                        <li>- Preliminaries</li>
+                        <li>- Review of the Guidelines of the Model Employee of the Year</li>
+                        <li>- Presentation of Qualified Nominees</li> 
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p class="underline">List of Nominees for the MODEL EMPLOYEE OF THE YEAR <t t-esc="year"/></p>
+                    <p> Evaluation Per Personnel Records</p>
+                    <p class="italic">Years in Service as Permanent Employee, Attendance Records, Administrative Cases</p>
+                </t>
+            </div>
+        </div>
+        <div class="article report-article">
+            <style>
+                table, td {
+                    border: 1px solid black;
+                    font-size: 11px;
+                    padding-left: 5px;
+                    page-break-inside: avoid;
+                }
+
+                table {
+                    border-collapse: collapse;
+                    width: 100%; 
+                }
+
+                p {
+                    font-size: 11 px;
+                    font-weight: bold;
+                }
+
+                .red {
+                    color: #800000;
+                }
+
+                .blue-header td {
+                    background-color: #c1bfff;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: middle;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
+
+                .fixed-height td {
+                    height: 68px;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+                
+                .name-cell {
+                    text-align: left;
+                }
+
+                .time-cell  {
+                    background-color: #FFB6C1;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .signatory {
+                    page-break-inside: avoid; 
+                    font-size: 11 px;
+                    margin-top: 30 px;
+                }
+            </style>
+            <t t-foreach="date_list" t-as="date">
+            <div style="page-break-inside: avoid;">
+                <t t-if="is_proposed_sched">
+                    <p  style="background-color: #FFB6C1; width: 33%" class="bold" 
+                        t-esc="date.strftime('%B %d, %Y')" />
+                </t>
+                <t t-else="">
+                    <p class="underline bold red" t-esc="date.strftime('%B %d, %Y')" />
+                </t>
+                <t t-foreach="awardee_list[date]" t-as="level">
+                    <t t-foreach="level_value" t-as="category">
+                        <p>
+                            <t t-foreach="levels" t-as="lvl">
+                                <t t-if="lvl[0] == level">
+                                    <t t-foreach="categories" t-as="categ">
+                                        <t t-if="categ[0] == category"> 
+                                            <span t-esc="lvl[1].upper()" /> -
+                                            <span t-esc="categ[1].upper()" /> CATEGORY 
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+                        </p>
+                        <table>
+                            <thead>
+                                <tr class="blue-header">
+                                    <td colspan="3">Name</td>
+                                    <td>Position</td>
+                                    <td>Department</td>
+                                    <td>Supervisor/Manager</td>
+                                    <td>Peer</td>
+                                    <td>CLIENT</td>
+                                    <td>Subordinate (For Supervisors Only)</td>
+                                    <td>Nominee</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="category_value" t-as="awardee">
+                                    <tr class="fixed-height">
+                                        <td width="2%" style="vertical-align: top;" rowspan="2" t-esc="awardee_index+1" />
+                                        <td width="12%" rowspan="2" style="text-align: left; vertical-align: top;" 
+                                            t-esc="awardee.employee_id.name.upper()" />
+                                        <td width="7%" rowspan="2">
+                                            <img t-att-src="'data:image/png;base64,%s' % to_text(awardee.image)" width="75px"/>
+                                        </td>
+                                        <td width="11%" rowspan="2" t-esc="awardee.assigned_position_id.name" />
+                                        <td width="10%" rowspan="2" t-esc="awardee.department_id.name" />
+                                        <t t-foreach="assessment_types" t-as="assessment">
+                                            <t t-if="interview_list[date][awardee][assessment[0]]">
+                                                <td width="11%" 
+                                                    t-esc="interview_list[date][awardee][assessment[0]][1]" />
+                                            </t>
+                                            <t t-else="">
+                                                <td width="11%">N/A</td>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <t t-foreach="assessment_types" t-as="assessment">
+                                            <t t-if="interview_list[date][awardee][assessment[0]]">
+                                                <td class="time-cell"
+                                                    t-esc="interview_list[date][awardee][assessment[0]][2]" />
+                                            </t>
+                                            <t t-else="">
+                                                <td></td>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </t>
+                </t>
+                </div>
+            </t>
+            <t t-if="is_proposed_sched">
+                <p style="background-color: #FFB6C1; width:43%">
+                    <t t-esc="deliberation_date.strftime('%B %d, %Y %-I:%M %p')" />
+                    : DELIBERATION OF RESULTS
+                </p>
+            </t>
+            <div class="signatory">
+                <p class="bold" t-esc="committee_member.employee_id.name" />
+                <p t-esc="committee_member.employee_id.department_id.name" />   
+                <p><i>Secretariat, Model Employee of the Year Committee</i></p>
+            </div>
+        </div>
+    </template>
+</odoo>

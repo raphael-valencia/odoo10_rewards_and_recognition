@@ -1,0 +1,169 @@
+<odoo>
+    <record id="awardee_batch_report_wizard_form" model="ir.ui.view">
+        <field name="name">Awardee Batch Report Wizard</field>
+        <field name="model">rewards.awardee_batch_report_wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="awardee_batch_id" readonly="1"/>
+                    <field name="award_type" invisible="1"/>
+                </group>
+                <group
+                    col="1"
+                    attrs="{
+                        'invisible': [('award_type', '!=', 'career')]
+                    }">
+                    <group>
+                        <field
+                            name="date_from"
+                            attrs="{
+                                'required': [('award_type', '=', 'career')]
+                            }"/>
+                        <field
+                            name="date_to"
+                            attrs="{
+                                'required': [('award_type', '=', 'career')]
+                            }"/>
+                    </group>
+                    <group string="Signatories (HR Department)">
+                        <field
+                            name="prepared_by_id"
+                            attrs="{
+                                'required': [('award_type', '=', 'career')]
+                            }"/>
+                        <field
+                            name="checked_by_id"
+                            attrs="{
+                                'required': [('award_type', '=', 'career')]
+                            }"/>
+                        <field
+                            name="noted_by_id"
+                            attrs="{
+                                'required': [('award_type', '=', 'career')]
+                            }"/>
+                    </group>
+                </group>
+                <group
+                    col="1"
+                    attrs="{
+                        'invisible': [('award_type', '!=', 'mey')]
+                    }">
+                    <group>
+                        <field
+                            name="mey_report_type"
+                            attrs="{
+                                'required': [('award_type', '=', 'mey')]
+                            }"/>
+                    </group>
+                    <group
+                        string="Proposed Dates"
+                        attrs="{
+                            'invisible': [('mey_report_type', '!=' , 'proposed')]
+                        }">
+                        <field
+                            name="preliminaries_date_from"
+                            attrs="{
+                            'required': [('mey_report_type', '=', 'proposed')]
+                        }"/>
+                        <field
+                            name="preliminaries_date_to"
+                            attrs="{
+                            'required': [('mey_report_type', '=', 'proposed')]
+                        }"/>
+                        <field
+                            name="deliberation_date"
+                            attrs="{
+                            'required': [('mey_report_type', '=', 'proposed')]
+                        }"/>
+                    </group>
+                    <group
+                        string="Signatories"
+                        attrs="{
+                            'invisible': [('mey_report_type', '=', False)]
+                        }">
+                        <field
+                            name="committee_member"
+                            options="{
+                                'no_create_edit': True,
+                                'no_create': True
+                            }"
+                            attrs="{
+                                'invisible': [('award_type', '!=', 'mey')],
+                                'required': [('award_type', '=', 'mey')]
+                            }"/>
+                    </group>
+                </group>
+                <group
+                    col="1"
+                    attrs="{
+                        'invisible': [('award_type', '!=', 'pbb')]
+                    }">
+                    <group>
+                        <field
+                            name="pbb_report_type"
+                            attrs="{
+                                'required': [('award_type', '=', 'pbb')]
+                            }"/>
+                    </group>
+                    <group
+                        string="Signatories (HR Department)"
+                        attrs="{
+                            'invisible': [('pbb_report_type', '!=', 'all_departments')]
+                        }">
+                        <field
+                            name="prepared_by_id"
+                            attrs="{
+                                'required': [
+                                    ('pbb_report_type', '=', 'all_departments')
+                                ]
+                            }"/>
+                        <field
+                            name="checked_by_id"
+                            attrs="{
+                                'required': [
+                                    ('pbb_report_type', '=', 'all_departments')
+                                ]
+                            }"/>
+                        <field
+                            name="noted_by_id"
+                            attrs="{
+                                'required': [
+                                    ('pbb_report_type', '=', 'all_departments')
+                                ]
+                            }"/>
+                    </group>
+                    <group
+                        string="Excluded Employees"
+                        attrs="{
+                            'invisible': [('pbb_report_type', '!=', 'delivery_units')]
+                        }">
+                        <field name="employee_no_pbb_ids"/>
+                        <field name="employee_no_saln_ids"/>
+                        <field name="employee_no_ca_ids"/>
+                        <field name="employee_no_spms_ids"/>
+                        <field name="employee_excluded_ids"/>
+                    </group>
+                </group>
+                <footer>
+                    <button
+                        name="action_print_report"
+                        string="Print"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="act_window_awardee_batch_report" model="ir.actions.act_window">
+        <field name="name">Awardee Batch Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rewards.awardee_batch_report_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_awardee_batch_id': active_id}</field>
+    </record>
+</odoo>
